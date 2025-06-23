@@ -2,7 +2,7 @@ name: Deploy to Cloud Run
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ main ]
     paths:
       - 'backend/**'
 
