@@ -3,14 +3,16 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.use(cors());
+app.use(cors({
+  origin: '*',
+}))
 
-// Health check route
+
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Simulated CI/CD status
+
 app.get('/ci-status', (req, res) => {
   res.json({
     lastBuild: '2024-06-11T13:00:00Z',
@@ -20,7 +22,7 @@ app.get('/ci-status', (req, res) => {
   });
 });
 
-// Simulated logs
+
 app.get('/logs', (req, res) => {
   res.json([
     { level: 'INFO', message: 'Service started successfully', timestamp: new Date().toISOString() },
