@@ -1,30 +1,35 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+<script setup>
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+
+const healthStatus = ref(null)
+const ciStatus = ref(null)
+const logs = ref([])
+
+onMounted(async () => {
+  const baseURL = import.meta.env.VITE_API_URL
+
+  const healthRes = await axios.get(`${baseURL}/health`)
+  healthStatus.value = healthRes.data
+
+  const ciRes = await axios.get(`${baseURL}/ci-status`)
+  ciStatus.value = ciRes.data
+
+  const logsRes = await axios.get(`${baseURL}/logs`)
+  logs.value = logsRes.data
+})
 </script>
 
 <template>
   <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
-</template>
+    <h2>Health: {{ healthStatus?.status }}</h2>
+    <h3>CI Status: {{ ciStatus?.status }}</h3>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+    <h4>Recent Logs</h4>
+    <ul>
+      <li v-for="(log, i) in logs" :key="i">
+        [{{ log.level }}] {{ log.message }}
+      </li>
+    </ul>
+  </div>
+</template>
