@@ -1,9 +1,13 @@
 const express = require('express')
 const axios = require('axios')
 require('dotenv').config() // If you're using a .env file locally
+const PORT = process.env.PORT || 8080
+
 
 const app = express()
-
+app.listen(PORT, () => {
+  console.log(`🚀 Backend running on port ${PORT}`)
+})
 // New /builds route
 app.get('/builds', async (req, res) => {
   const GITHUB_TOKEN = process.env.GITHUB_TOKEN
