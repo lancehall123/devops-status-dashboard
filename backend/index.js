@@ -1,36 +1,36 @@
-const express = require('express');
-const cors = require('cors');
-const app = express();
-const port = process.env.PORT || 3001;
+const express = require('express')
+const axios = require('axios')
+require('dotenv').config() // If you're using a .env file locally
 
-app.use(cors({
-  origin: '*',
-}))
+const app = express()
 
+// New /builds route
+app.get('/builds', async (req, res) => {
+  const GITHUB_TOKEN = process.env.GITHUB_TOKEN
+  const GITHUB_OWNER = process.env.GITHUB_OWNER
+  const GITHUB_REPO = process.env.GITHUB_REPO
 
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
+  try {
+    const response = await axios.get(
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/runs?per_page=5`,
+      {
+        headers: {
+          Authorization: `Bearer ${GITHUB_TOKEN}`,
+          'User-Agent': 'devops-dashboard'
+        }
+      }
+    )
 
+    const builds = response.data.workflow_runs.map(run => ({
+      id: run.run_number,
+      status: run.conclusion || run.status,
+      date: new Date(run.created_at).toLocaleString(),
+      url: run.html_url
+    }))
 
-app.get('/ci-status', (req, res) => {
-  res.json({
-    lastBuild: '2024-06-11T13:00:00Z',
-    status: 'success',
-    duration: '1m 20s',
-    triggeredBy: 'push to main',
-  });
-});
-
-
-app.get('/logs', (req, res) => {
-  res.json([
-    { level: 'INFO', message: 'Service started successfully', timestamp: new Date().toISOString() },
-    { level: 'WARN', message: 'CPU usage high on pod devops-api', timestamp: new Date().toISOString() },
-    { level: 'ERROR', message: 'Deployment to prod failed', timestamp: new Date().toISOString() }
-  ]);
-});
-
-app.listen(port, () => {
-  console.log(`DevOps API running on http://localhost:${port}`);
-});
+    res.json(builds)
+  } catch (err) {
+    console.error('Error fetching builds:', err.message)
+    res.status(500).json({ error: 'Failed to fetch builds from GitHub' })
+  }
+})
