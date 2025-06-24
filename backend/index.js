@@ -26,7 +26,7 @@ app.get('/builds', async (req, res) => {
     )
 
     const builds = response.data.workflow_runs.map(run => ({
-      id: run.run_number,
+      id: run.id,
       status: run.conclusion || run.status,
       date: new Date(run.created_at).toLocaleString(),
       url: run.html_url
