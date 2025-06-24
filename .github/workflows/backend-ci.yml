@@ -29,9 +29,8 @@ jobs:
       run: |
         echo "No linting yet — add ESLint later if needed"
 
-    - name: Test (placeholder)
-      run: |
-        echo "No tests defined yet — add Jest or other test runner here"
+    - name: Run backend tests
+      run: npm test
 
     - name: Build Docker image
       run: docker build -t devops-api .
