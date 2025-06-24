@@ -1,35 +1,92 @@
-<script setup>
-import { ref, onMounted } from 'vue'
+<template>
+  <main>
+    <h1>🛠️ DevOps Build Monitor</h1>
+
+    <section class="builds">
+      <h2>🔄 Recent GitHub Builds</h2>
+      <ul v-if="builds.length">
+        <li v-for="build in builds" :key="build.id">
+          <a :href="build.url" target="_blank" rel="noopener">
+            <span :class="build.status === 'success' ? 'success' : 'failure'">
+              {{ statusIcon(build.status) }}
+            </span>
+            Build #{{ build.id }} – {{ build.status }} – {{ build.date }}
+          </a>
+        </li>
+      </ul>
+      <p v-else>Loading builds…</p>
+    </section>
+  </main>
+</template>
+
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import axios from 'axios'
 
-const healthStatus = ref(null)
-const ciStatus = ref(null)
-const logs = ref([])
+const API_URL = import.meta.env.VITE_API_URL || 'https://your-backend-url'
+const builds = ref([])
 
 onMounted(async () => {
-  const baseURL = import.meta.env.VITE_API_URL
-
-  const healthRes = await axios.get(`${baseURL}/health`)
-  healthStatus.value = healthRes.data
-
-  const ciRes = await axios.get(`${baseURL}/ci-status`)
-  ciStatus.value = ciRes.data
-
-  const logsRes = await axios.get(`${baseURL}/logs`)
-  logs.value = logsRes.data
+  try {
+    const response = await axios.get(`${API_URL}/builds`)
+    builds.value = response.data
+  } catch (err) {
+    console.error('Error fetching builds:', err)
+  }
 })
+
+function statusIcon(status: string) {
+  if (!status) return '🔄'
+  if (status.toLowerCase() === 'success') return '✅'
+  if (status.toLowerCase() === 'failure') return '❌'
+  return '⚠️'
+}
 </script>
 
-<template>
-  <div>
-    <h2>Health: {{ healthStatus?.status }}</h2>
-    <h3>CI Status: {{ ciStatus?.status }}</h3>
+<style scoped>
+main {
+  font-family: 'Segoe UI', sans-serif;
+  padding: 2rem;
+  background: #f7f7f7;
+}
 
-    <h4>Recent Logs</h4>
-    <ul>
-      <li v-for="(log, i) in logs" :key="i">
-        [{{ log.level }}] {{ log.message }}
-      </li>
-    </ul>
-  </div>
-</template>
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+section {
+  background: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.builds ul {
+  list-style: none;
+  padding: 0;
+}
+
+.builds li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+  font-family: monospace;
+}
+
+.builds a {
+  text-decoration: none;
+  color: #333;
+}
+
+.success {
+  color: green;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.failure {
+  color: red;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+</style>
