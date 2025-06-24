@@ -23,8 +23,15 @@
 import { onMounted, ref } from 'vue'
 import axios from 'axios'
 
+interface Build {
+  id: number
+  status: string
+  date: string
+  url: string
+}
+
 const API_URL = import.meta.env.VITE_API_URL || 'https://your-backend-url'
-const builds = ref([])
+const builds = ref<Build[]>([])
 
 onMounted(async () => {
   try {
@@ -42,6 +49,7 @@ function statusIcon(status: string) {
   return '⚠️'
 }
 </script>
+
 
 <style scoped>
 main {
