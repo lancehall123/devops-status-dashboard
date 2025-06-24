@@ -1,11 +1,13 @@
 const express = require('express')
 const axios = require('axios')
-import cors from 'cors'
+const cors = require('cors')
 require('dotenv').config()
-const PORT = process.env.PORT || 8080
 
+const PORT = process.env.PORT || 8080
 const app = express()
+
 app.use(cors())
+
 app.listen(PORT, () => {
   console.log(`🚀 Backend running on port ${PORT}`)
 })
