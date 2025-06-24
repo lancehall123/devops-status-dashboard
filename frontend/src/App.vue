@@ -1,20 +1,23 @@
 <template>
   <main>
-    <h1>🛠️ DevOps Build Monitor</h1>
+    <h1>DevOps Build Monitor</h1>
 
     <section class="builds">
-      <h2>🔄 Recent GitHub Builds</h2>
+      <h2>Recent GitHub Builds</h2>
       <ul v-if="builds.length">
         <li v-for="build in builds" :key="build.id">
           <a :href="build.url" target="_blank" rel="noopener">
-            <span :class="build.status === 'success' ? 'success' : 'failure'">
-              {{ statusIcon(build.status) }}
+            <span class="build-meta">
+              <span class="build-id">#{{ build.id }}</span>
+              <span :class="['status-badge', build.status.toLowerCase()]">
+                {{ build.status }}
+              </span>
+              <span class="build-date">{{ build.date }}</span>
             </span>
-            Build #{{ build.id }} – {{ build.status }} – {{ build.date }}
           </a>
         </li>
       </ul>
-      <p v-else>Loading builds…</p>
+      <p v-else class="loading">Loading builds…</p>
     </section>
   </main>
 </template>
@@ -41,60 +44,101 @@ onMounted(async () => {
     console.error('Error fetching builds:', err)
   }
 })
-
-function statusIcon(status: string) {
-  if (!status) return '🔄'
-  if (status.toLowerCase() === 'success') return '✅'
-  if (status.toLowerCase() === 'failure') return '❌'
-  return '⚠️'
-}
 </script>
-
 
 <style scoped>
 main {
   font-family: 'Segoe UI', sans-serif;
   padding: 2rem;
-  background: #f7f7f7;
+  background: #f4f4f4;
+  max-width: 800px;
+  margin: auto;
 }
 
 h1 {
   font-size: 2rem;
   margin-bottom: 1.5rem;
+  text-align: center;
+  color: #333;
 }
 
 section {
   background: #fff;
-  padding: 1rem 1.5rem;
+  padding: 1.5rem;
   border-radius: 1rem;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  color: #444;
 }
 
 .builds ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .builds li {
-  padding: 0.5rem 0;
+  padding: 1rem 0;
   border-bottom: 1px solid #eee;
   font-family: monospace;
+}
+
+.builds li:last-child {
+  border-bottom: none;
 }
 
 .builds a {
   text-decoration: none;
   color: #333;
+  display: block;
 }
 
-.success {
-  color: green;
-  font-weight: bold;
-  margin-right: 0.5rem;
+.build-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
 }
 
-.failure {
-  color: red;
+.build-id {
   font-weight: bold;
-  margin-right: 0.5rem;
+}
+
+.status-badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.status-badge.success {
+  background-color: #28a745;
+}
+
+.status-badge.failure {
+  background-color: #dc3545;
+}
+
+.status-badge.pending,
+.status-badge.in_progress {
+  background-color: #ffc107;
+  color: #222;
+}
+
+.build-date {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.loading {
+  font-style: italic;
+  color: #888;
+  text-align: center;
 }
 </style>
