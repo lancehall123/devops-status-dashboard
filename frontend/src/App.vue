@@ -3,7 +3,7 @@
     <h1>DevOps Status Dashboard Overview</h1>
 
     <section class="builds">
-      <p>
+      <p class="description">
         This application is a real-world demonstration of full-stack DevOps practices, showcasing development workflows,
         CI/CD automation (including testing) and containerized cloud deployment using GitHub Actions, Google Cloud, and
         Terraform.
@@ -82,6 +82,12 @@ h1 {
   margin-bottom: 1.5rem;
   text-align: center;
   color: #333;
+}
+
+description {
+  font-size: 1.1rem;
+  color: #000;
+  margin-bottom: 2rem;
 }
 
 section {
