@@ -55,6 +55,7 @@ h1 {
 
 section {
   background: #fff;
+  color: black;
   padding: 1.5rem;
   border-radius: 1rem;
   margin-bottom: 1.5rem;
