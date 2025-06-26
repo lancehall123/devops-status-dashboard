@@ -1,6 +1,6 @@
 <template>
   <main class="overview">
-    <h1>DevOps Status Dashboard Overview</h1>
+    
 
     <section>
       <h2>Why This App Exists</h2>
