@@ -3,25 +3,32 @@
     <h1>DevOps Status Dashboard Overview</h1>
 
     <section class="builds">
-          <p>
-      This application is a real-world demonstration of full-stack DevOps practices, showcasing development workflows,
-      CI/CD automation (including testing) and containerized cloud deployment using GitHub Actions, Google Cloud, and Terraform.
-    </p>
+      <p>
+        This application is a real-world demonstration of full-stack DevOps practices, showcasing development workflows,
+        CI/CD automation (including testing) and containerized cloud deployment using GitHub Actions, Google Cloud, and
+        Terraform.
+      </p>
       <h2>Recent GitHub Builds</h2>
       <h4>Fetches build data for this application. Click on a build to view details.</h4>
       <ul v-if="builds.length">
-        <li v-for="build in builds" :key="build.id">
+        <li v-for="build in builds" :key="build.id" class="build-item">
           <a :href="build.url" target="_blank" rel="noopener">
             <span class="build-meta">
-              <span class="build-id">#{{ build.id }}</span>
+              <span class="build-id">#{{ build.run_number }}</span>
               <span :class="['status-badge', build.status.toLowerCase()]">
                 {{ build.status }}
               </span>
               <span class="build-date">{{ build.date }}</span>
-              <span class="build-message">{{ build.message }}</span>
+              <span class="build-message">"{{ build.message }}"</span>
             </span>
+            <div class="build-details">
+              <span>{{ build.author }}</span>
+              <span>{{ build.event }}</span>
+              <span><code>{{ build.sha }}</code></span>
+            </div>
           </a>
         </li>
+
       </ul>
       <p v-else class="loading">Loading builds…</p>
     </section>
@@ -35,13 +42,17 @@
 import { onMounted, ref } from 'vue'
 import axios from 'axios'
 import AppOverview from './components/AppOverview.vue'
-import Overview  from './components/Overview.vue'
+import Overview from './components/Overview.vue'
 interface Build {
   id: number
   status: string
   date: string
   url: string
   message: string
+  author: string
+  sha: string
+  event: string
+  run_number: number
 }
 
 const API_URL = import.meta.env.VITE_API_URL
@@ -152,4 +163,47 @@ h2 {
   color: #888;
   text-align: center;
 }
+.build-item {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.build-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.status-badge {
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.4rem;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.status-badge.success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.failure {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.build-date,
+.build-message {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.build-details {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.3rem;
+  display: flex;
+  gap: 1.2rem;
+}
+
 </style>
