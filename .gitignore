@@ -134,3 +134,8 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+infra/terraform.tfvars
+infra/terraform.exe
+infra/.terraform/providers/registry.terraform.io/hashicorp/google/6.41.0/windows_386/terraform-provider-google_v6.41.0_x5.exe
+infra/terraform.tfstate
+infra/.terraform.lock.hcl
