@@ -35,18 +35,6 @@
         <li>Supports 99.999% uptime goals by reducing human error in releases</li>
       </ul>
     </section>
-
-    <section>
-      <h2>Tech Stack</h2>
-      <ul>
-        <li>Vue 3 + TypeScript frontend</li>
-        <li>Node.js + Express backend</li>
-        <li>GitHub Actions for CI/CD</li>
-        <li>Cloud Run for deployment</li>
-        <li>Terraform for infrastructure automation</li>
-        <li>Jest & Supertest for backend testing</li>
-      </ul>
-    </section>
   </main>
 </template>
 
