@@ -1,11 +1,12 @@
 <template>
   <main>
     <h1>DevOps Status Dashboard Overview</h1>
-    <p class="intro">
+
+    <section class="builds">
+          <p>
       This application is a real-world demonstration of full-stack DevOps practices, showcasing development workflows,
       CI/CD automation (including testing) and containerized cloud deployment using GitHub Actions, Google Cloud, and Terraform.
     </p>
-    <section class="builds">
       <h2>Recent GitHub Builds</h2>
       <h4>Fetches build data for this application. Click on a build to view details.</h4>
       <ul v-if="builds.length">
