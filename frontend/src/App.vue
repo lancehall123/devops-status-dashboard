@@ -5,34 +5,34 @@
     <section class="builds">
       <p class="description">
         This application is a real-world demonstration of full-stack DevOps practices, showcasing development workflows,
-        CI/CD automation (including testing) and containerized cloud deployment using GitHub Actions, Google Cloud, and
+        CI/CD automation (including testing), and containerized cloud deployment using GitHub Actions, Google Cloud, and
         Terraform.
       </p>
       <h2>Recent GitHub Builds</h2>
-      <h4>Fetches build data for this application. Click on a build to view details.</h4>
+      <h4>Click on a build to view details on GitHub</h4>
       <ul v-if="builds.length">
         <li v-for="build in builds" :key="build.id" class="build-item">
           <a :href="build.url" target="_blank" rel="noopener">
             <span class="build-meta">
-              <span class="build-id">#{{ build.run_number }}</span>
-              <span :class="['status-badge', build.status.toLowerCase()]">
-                {{ build.status }}
-              </span>
+              <span class="build-id">Run #{{ build.run_number }}</span>
+              <span :class="['status-badge', build.status.toLowerCase()]">{{ build.status }}</span>
               <span class="build-date">{{ build.date }}</span>
               <span class="build-message">"{{ build.message }}"</span>
             </span>
             <div class="build-details">
-              <span>{{ build.author }}</span>
-              <span>{{ build.event }}</span>
-              <span><code>{{ build.sha }}</code></span>
+              <span>{{ build.author }} on branch {{ build.branch }}</span>
+              <span>{{ build.event }} ({{ build.workflow }})</span>
+              <span>Commit: <code>{{ build.sha }}</code></span>
+              <span>Duration: {{ build.duration }}</span>
             </div>
+
           </a>
         </li>
-
       </ul>
       <p v-else class="loading">Loading builds…</p>
     </section>
-    <br>
+
+    <br />
     <AppOverview />
     <Overview />
   </main>
@@ -43,6 +43,7 @@ import { onMounted, ref } from 'vue'
 import axios from 'axios'
 import AppOverview from './components/AppOverview.vue'
 import Overview from './components/Overview.vue'
+
 interface Build {
   id: number
   status: string
@@ -53,6 +54,9 @@ interface Build {
   sha: string
   event: string
   run_number: number
+  branch: string
+  workflow: string
+  duration: string
 }
 
 const API_URL = import.meta.env.VITE_API_URL
@@ -73,7 +77,7 @@ main {
   font-family: 'Segoe UI', sans-serif;
   padding: 2rem;
   background: #f4f4f4;
-  max-width: 800px;
+  max-width: 850px;
   margin: auto;
 }
 
@@ -84,10 +88,10 @@ h1 {
   color: #333;
 }
 
-description {
-  font-size: 1.1rem;
-  color: #000;
-  margin-bottom: 2rem;
+.description {
+  font-size: 1.05rem;
+  color: #111;
+  margin-bottom: 1.5rem;
 }
 
 section {
@@ -98,87 +102,47 @@ section {
 }
 
 h2 {
-  font-size: 1.4rem;
-  margin-bottom: 1rem;
-  color: #444;
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 0.5rem;
 }
 
-.builds ul {
+h4 {
+  font-size: 1rem;
+  color: #777;
+  margin-bottom: 1rem;
+}
+
+ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.builds li {
-  padding: 1rem 0;
-  border-bottom: 1px solid #eee;
-  font-family: monospace;
-}
-
-.builds li:last-child {
-  border-bottom: none;
-}
-
-.builds a {
-  text-decoration: none;
-  color: #333;
-  display: block;
-}
-
-.build-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: center;
-}
-
-.build-id {
-  font-weight: bold;
-}
-
-.status-badge {
-  padding: 0.2rem 0.6rem;
-  border-radius: 0.5rem;
-  font-size: 0.8rem;
-  color: white;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-
-.status-badge.success {
-  background-color: #28a745;
-}
-
-.status-badge.failure {
-  background-color: #dc3545;
-}
-
-.status-badge.pending,
-.status-badge.in_progress {
-  background-color: #ffc107;
-  color: #222;
-}
-
-.build-date {
-  font-size: 0.85rem;
-  color: #666;
-}
-
-.loading {
-  font-style: italic;
-  color: #888;
-  text-align: center;
-}
 .build-item {
   padding: 0.8rem 0;
   border-bottom: 1px solid #ddd;
 }
 
+.build-item:last-child {
+  border-bottom: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .build-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   align-items: center;
+  font-family: monospace;
+}
+
+.build-id {
+  font-weight: bold;
 }
 
 .status-badge {
@@ -198,6 +162,12 @@ h2 {
   color: #721c24;
 }
 
+.status-badge.pending,
+.status-badge.in_progress {
+  background: #fff3cd;
+  color: #856404;
+}
+
 .build-date,
 .build-message {
   font-size: 0.9rem;
@@ -211,5 +181,4 @@ h2 {
   display: flex;
   gap: 1.2rem;
 }
-
 </style>
