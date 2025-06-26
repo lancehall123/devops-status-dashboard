@@ -4,7 +4,7 @@
       <div>
         <h2>Tech Stack</h2>
         <ul>
-          <li><strong>Version Control:</strong> GitHub <a href="https://github.com/lancehall123/devops-status-dashboard" target="_blank" rel="noopener">https://github.com/lancehall123/devops-status-dashboard</a></li>
+          <li><strong>Version Control:</strong> GitHub <a href="https://github.com/lancehall123/devops-status-dashboard" target="_blank" rel="noopener">Repo</a></li>
           <li><strong>Frontend:</strong> Vue 3, Vite, TypeScript</li>
           <li><strong>Backend:</strong> Node.js, Express, TypeScript</li>
           <li><strong>CI/CD:</strong> GitHub Actions with Docker builds</li>
