@@ -32,7 +32,8 @@ app.get('/builds', async (req, res) => {
       id: run.id,
       status: run.conclusion || run.status,
       date: new Date(run.created_at).toLocaleString(),
-      url: run.html_url
+      url: run.html_url,
+      message: run.head_commit?.message || 'No commit message'
     }))
 
     res.json(builds)

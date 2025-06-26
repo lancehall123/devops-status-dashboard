@@ -18,6 +18,7 @@
                 {{ build.status }}
               </span>
               <span class="build-date">{{ build.date }}</span>
+              <span class="build-message">{{ build.message }}</span>
             </span>
           </a>
         </li>
@@ -26,6 +27,7 @@
     </section>
     <br>
     <AppOverview />
+    <Overview />
   </main>
 </template>
 
@@ -33,15 +35,16 @@
 import { onMounted, ref } from 'vue'
 import axios from 'axios'
 import AppOverview from './components/AppOverview.vue'
-
+import Overview  from './components/Overview.vue'
 interface Build {
   id: number
   status: string
   date: string
   url: string
+  message: string
 }
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://your-backend-url'
+const API_URL = import.meta.env.VITE_API_URL
 const builds = ref<Build[]>([])
 
 onMounted(async () => {
