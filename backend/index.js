@@ -33,7 +33,11 @@ app.get('/builds', async (req, res) => {
       status: run.conclusion || run.status,
       date: new Date(run.created_at).toLocaleString(),
       url: run.html_url,
-      message: run.head_commit?.message || 'No commit message'
+      message: run.head_commit?.message || 'No commit message',
+      author: run.head_commit?.author?.name || run.actor?.login || 'Unknown',
+      sha: run.head_commit?.id?.substring(0, 7) || run.head_sha?.substring(0, 7),
+      event: run.event,
+      run_number: run.run_number
     }))
 
     res.json(builds)
