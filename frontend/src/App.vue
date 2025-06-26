@@ -1,5 +1,6 @@
 <template>
   <main>
+   
     <h1>DevOps Build Monitor</h1>
 
     <section class="builds">
@@ -19,12 +20,14 @@
       </ul>
       <p v-else class="loading">Loading builds…</p>
     </section>
+     <AppOverview />
   </main>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import axios from 'axios'
+import AppOverview from './components/AppOverview.vue'
 
 interface Build {
   id: number
