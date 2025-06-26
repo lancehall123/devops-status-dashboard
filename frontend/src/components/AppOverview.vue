@@ -1,26 +1,28 @@
 <template>
   <section class="overview">
-    <h1>DevOps Status Dashboard Overview</h1>
-    <p class="intro">
-      This application is a real-world demonstration of full-stack DevOps practices, showcasing development workflows, CI/CD automation, and containerized cloud deployment using GitHub Actions and Google Cloud.
-    </p>
-
     <div class="grid">
       <div>
         <h2>Tech Stack</h2>
         <ul>
+          <li><strong>Version Control:</strong> GitHub <a href="https://github.com/lancehall123/devops-status-dashboard" target="_blank" rel="noopener">https://github.com/lancehall123/devops-status-dashboard</a></li>
           <li><strong>Frontend:</strong> Vue 3, Vite, TypeScript</li>
           <li><strong>Backend:</strong> Node.js, Express, TypeScript</li>
           <li><strong>CI/CD:</strong> GitHub Actions with Docker builds</li>
           <li><strong>Hosting:</strong> Google Cloud Run (frontend & backend)</li>
+          <li><strong>Infrastructure as Code:</strong> Terraform</li>
         </ul>
+        <br>
       </div>
 
       <div>
         <h2>How It Works</h2>
         <ol>
-          <li>Code pushed to the <code>dev</code> branch triggers a CI workflow.</li>
-          <li>GitHub Actions installs dependencies, runs tests, and builds Docker images.</li>
+          <li>Code pushed to the <code>dev</code> branch.</li>
+          <li>A Pull request is reviewed with the intent of merging into the <code>main</code> branch.</li>
+          <li>Code merged into the <code>main</code> branch triggers a CI workflow.</li>
+          <li>GitHub Actions installs dependencies.</li>
+          <li>GitHub Actions builds Docker images for the frontend and backend.</li>
+          <li>GitHub Actions runs production tests of the backend.</li>
           <li>Containers are deployed to Cloud Run via GitHub Actions.</li>
           <li>The frontend calls the backend's <code>/builds</code> endpoint for build data.</li>
         </ol>
@@ -42,7 +44,13 @@
           <li>Tests run automatically in the CI pipeline.</li>
         </ul>
       </div>
-
+      <div>
+        <h2>Infrastructure</h2>
+        <ul>
+          <li>Terraform used for infrastructure as code.</li>
+          <li>Google Cloud resources managed through Terraform.</li>
+        </ul>
+      </div>
       <div>
         <h2>Future Enhancements</h2>
         <ul>
