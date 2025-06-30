@@ -1,97 +1,92 @@
 # DevOps Status Dashboard
 
-This project is a full-stack DevOps monitoring dashboard built using:
-
--  Node.js (Express) backend  
--  Vue 3 frontend with TypeScript and Vite  
--  Deployed to Google Cloud Run  
--  CI/CD via GitHub Actions  
--  Secure secrets via GitHub & environment variables  
--  Containerized using Docker  
--  Monitors latest GitHub Actions build statuses  
-
----
+This project demonstrates a full-stack DevOps workflow using a Vue.js frontend, Node.js backend, CI/CD via GitHub Actions, and deployment to Google Cloud Run using Terraform.
 
 ## Local Development Setup
 
-### 1. Clone the Repository
+### Prerequisites
 
-```bash
-git clone https://github.com/your-username/devops-status-dashboard.git
-cd devops-status-dashboard
+- Node.js (v18 or above)
+- npm
+- Google Cloud SDK (for deployment)
+- Terraform (if managing infrastructure)
+
+### Environment Setup
+
+Create the following `.env` file in both the `backend` and `frontend` directories:
+
+#### `.env` (backend)
+
+```env
+GITHUB_TOKEN=your_github_pat
+GITHUB_OWNER=your_github_username_or_org
+GITHUB_REPO=your_repository_name
+PORT=8080
 ```
+
+#### `.env` (frontend)
+
+```env
+VITE_API_URL=http://localhost:8080
+```
+
+>  The `.env` file is ignored from version control by `.gitignore`.
 
 ---
 
-## Project Structure
+##  GitHub Workflows
 
-```
-.
-├── backend/              # Node.js + Express API
-├── frontend/             # Vue 3 + TypeScript + Vite UI
-├── infra/                # Terraform (optional, for GCP setup)
-└── .env                  # Environment variables (not committed)
-```
+### 1. Backend CI (`.github/workflows/backend-ci.yml`)
+
+This workflow runs on pushes to the `dev` branch for changes in the `backend/` directory. It:
+
+- Installs dependencies
+- Runs tests (Jest)
+- Builds the Docker image
+
+### 2. Backend Deployment to Cloud Run (`.github/workflows/deploy-cloudrun.yml`)
+
+Triggered on pushes to `main` with changes in `backend/`. It:
+
+- Authenticates to Google Cloud
+- Builds and pushes the Docker image
+- Deploys to Cloud Run
+
+### 3. Frontend Deployment to Cloud Run (`.github/workflows/frontend-cloudrun.yml`)
+
+Triggered on pushes to `main` with changes in `frontend/`. It:
+
+- Builds the frontend using Vite
+- Deploys it to Cloud Run
 
 ---
 
-## Prerequisites
+## Build & Run Locally
 
-- [Node.js](https://nodejs.org/en/) (v18+)
-- [npm](https://www.npmjs.com/)
-- [Docker](https://www.docker.com/) (optional, for container builds)
-
----
-
-## Backend Setup
+### Backend
 
 ```bash
 cd backend
 npm install
-cp .env.example .env
-```
-
-### `.env` file (create in `/backend`)
-
-```env
-PORT=8080
-GITHUB_TOKEN=ghp_XXXXXXXXXXXXXXXXXXXX
-GITHUB_OWNER=your-github-username
-GITHUB_REPO=devops-status-dashboard
-```
-
-Run the backend:
-
-```bash
 npm run dev
 ```
 
-The API will start at: `http://localhost:8080`
-
----
-
-## Frontend Setup
+### Frontend
 
 ```bash
-cd ../frontend
+cd frontend
 npm install
-cp .env.example .env
-```
-
-### `.env` file (create in `/frontend`)
-
-```env
-VITE_API_URL=http://localhost:8080
-or
-VITE_API_URL=PUBLIC_BACKEND_URL
-```
-
-Then run the frontend:
-
-```bash
 npm run dev
 ```
 
+
+
 ---
 
+## What This Project Demonstrates
 
+- Real-time GitHub Actions status monitoring
+- Modern frontend + backend separation
+- Containerization and deployment to Google Cloud Run
+- CI/CD automation with GitHub Actions
+- Infrastructure-as-Code with Terraform (optional)
