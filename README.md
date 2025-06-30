@@ -51,7 +51,7 @@ npm install
 cp .env.example .env
 ```
 
-### 🔐 `.env` file (create in `/backend`)
+### `.env` file (create in `/backend`)
 
 ```env
 PORT=8080
@@ -69,4 +69,29 @@ npm run dev
 The API will start at: `http://localhost:8080`
 
 ---
+
+## Frontend Setup
+
+```bash
+cd ../frontend
+npm install
+cp .env.example .env
+```
+
+### `.env` file (create in `/frontend`)
+
+```env
+VITE_API_URL=http://localhost:8080
+or
+VITE_API_URL=PUBLIC_BACKEND_URL
+```
+
+Then run the frontend:
+
+```bash
+npm run dev
+```
+
+---
+
 
